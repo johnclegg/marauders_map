@@ -105,14 +105,32 @@ func OpenFoodTruck(w http.ResponseWriter, r *http.Request) {
   latitude, err2 := strconv.ParseFloat(queryParameters.Get("lat"), 64)
   longitude, err3 := strconv.ParseFloat(queryParameters.Get("lon"), 64)
 
-  // TODO Update the Food Truck status/open timestamp
+  update := `UPDATE foodtrucks SET (lat, lng, is_open) = ($2, $3, true) WHERE id = $1`
+  tx, err := db.Begin()
+  _, err = tx.Exec(update, foodTruckId, latitude, longitude)
+  err = tx.Commit()
+
+  if (err != nil){
+    fmt.Println(err)
+    return
+  }
 
   w.Write([]byte(fmt.Sprintf("Opening food truck %s at %s,%s ", foodTruckId, latitude, longitude)))
 }
 
 func CloseFoodTruck(w http.ResponseWriter, r *http.Request) {
   foodTruckId := mux.Vars(r)["id"]
-  // TODO Update the Food Truck status/open timestamp
+
+  update := `UPDATE foodtrucks SET is_open = false WHERE id = $1`
+  tx, err := db.Begin()
+  _, err = tx.Exec(update, foodTruckId)
+  err = tx.Commit()
+
+  if (err != nil){
+    fmt.Println(err)
+    return
+  }
+
   w.Write([]byte("Closing food truck :( " + foodTruckId))
 }
 
@@ -137,7 +155,15 @@ func PostFoodTruckLocation(w http.ResponseWriter, r *http.Request) {
   latitude, err2 := strconv.ParseFloat(queryParameters.Get("lat"), 64)
   longitude, err3 := strconv.ParseFloat(queryParameters.Get("lon"), 64)
 
-  // TODO Update the Food Truck status/open timestamp
+  update := `UPDATE foodtrucks SET (lat, lng) = ($2, $3) WHERE id = $1`
+  tx, err := db.Begin()
+  _, err = tx.Exec(update, foodTruckId, latitude, longitude)
+  err = tx.Commit()
+
+  if (err != nil){
+    fmt.Println(err)
+    return
+  }
 
   w.Write([]byte(fmt.Sprintf("Posting food truck location! %s at %s, %s",
                               foodTruckId, latitude, longitude)))
