@@ -6,20 +6,19 @@ import android.location.Location;
  * Created by matt.bennett on 12/05/2016.
  */
 public class MaraudersApiClient {
-    private String MaraudersBaseUrl = "http://localhost:9001/";
+    private String maraudersBaseUrl;
     private String OpenFormat = "api/trucks/open/%d?lat=%f&long=%f";
 
-    public MaraudersApiClient(String url) {
-        MaraudersBaseUrl = url;
-    }
+   public MaraudersApiClient(String maraudersBaseUrl) {
+       this.maraudersBaseUrl = maraudersBaseUrl;
+   }
 
-    public MaraudersApiClient() {
-    }
-
-    public String postLocationToMaruaders(Location location) {
+    public String postLocationToMarauders(Location location) {
+        //call endpoint
 
 
-        return "Saved succesfully!";
+
+        return "Saved successfully!";
     }
 
     private String openUrl(Location location, int id) {

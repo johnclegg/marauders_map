@@ -11,18 +11,20 @@ import android.widget.Button;
 
 public class PostActivity extends AppCompatActivity {
     private LocationFinder locationFinder;
+    private MaraudersApiClient maraudersApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         locationFinder = new LocationFinder(this);
+        maraudersApiClient = new MaraudersApiClient(getString(R.string.marauders_url));
 
         setContentView(R.layout.activity_post);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         Button button = (Button) findViewById(R.id.open_button);
-        button.setOnClickListener(new PostLocationListener(locationFinder));
+        button.setOnClickListener(new PostLocationListener(locationFinder, maraudersApiClient));
     }
 
     @Override
